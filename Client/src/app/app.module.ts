@@ -13,6 +13,7 @@ import { SignIn } from '../pages/sign/sign.in';
 import { SignUp } from '../pages/sign/sign.up';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { OrderPage } from '../pages/order/order';
+import { CheckoutPage } from '../pages/checkout/checkout';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { OrderPage } from '../pages/order/order';
         OrderPage,
         SignIn,
         SignUp,
+        CheckoutPage,
         WelcomePage
     ],
     imports: [
@@ -42,6 +44,7 @@ import { OrderPage } from '../pages/order/order';
         OrderPage,
         SignIn,
         SignUp,
+        CheckoutPage,
         WelcomePage
     ],
     providers: [Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]

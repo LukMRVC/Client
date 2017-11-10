@@ -2,6 +2,9 @@
 import { Headers, Http } from '@angular/http';
 import { NavController, NavParams, Events, ToastController, Tabs } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
+import { CheckoutPage } from '../checkout/checkout';
+
+
 
 /*
   Generated class for the order page.
@@ -54,15 +57,23 @@ export class OrderPage {
             token: [this.globals.getToken()],
             totalprice: [this.totalPrice]
         };
-        console.log(JSON.stringify(order));
 
-        this.http.post("http://192.168.0.108:8088/order/", JSON.stringify(order), { headers: headers }).map(res => res.text()).subscribe(
+        let getReq = new Headers;
+        getReq.append("Authorization", "Basic " + this.globals.getToken());
+
+        this.http.get("http://192.168.0.108:8088/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
+            this.navCtrl.push(CheckoutPage, { token: success });
+        })
+
+        
+
+      /*  this.http.post("http://192.168.0.108:8088/order/", JSON.stringify(order), { headers: headers }).map(res => res.text()).subscribe(
             res => {
                 this.presentToast("Úspěšná objednávka");
                 this.RemoveItems();
                 this.tabs.select(0);
-            }, error => { console.log(error) });
-        console.log(JSON.stringify(order));
+            }, error => { console.log(error) });*/
+       
     }
 
     //User shared service from internet tutorial
@@ -83,7 +94,6 @@ export class OrderPage {
     public removeItem(id) {
         this.globals.RemoveFromOrder(id);
         for (let i = 0; i < this.html.length; ++i) {
-            console.log(this.html[i]);
             if (this.html[i].id == id) {
                 this.totalPrice -= this.html[i].price;
                 this.html.splice(i, 1);
