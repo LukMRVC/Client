@@ -1,0 +1,49 @@
+﻿import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler, Badge } from 'ionic-angular';
+import { MyApp } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { StatusBar, Splashscreen } from 'ionic-native';
+import { AboutPage } from '../pages/about/about';
+import { ContactPage } from '../pages/contact/contact';
+import { HomePage } from '../pages/home/home';
+import { TabsPage } from '../pages/tabs/tabs';
+import { HttpModule } from '@angular/http';
+import { Globals } from './Globals';
+import { SignIn } from '../pages/sign/sign.in';
+import { SignUp } from '../pages/sign/sign.up';
+import { WelcomePage } from '../pages/welcome/welcome';
+import { OrderPage } from '../pages/order/order';
+
+
+@NgModule({
+    declarations: [
+        MyApp,
+        AboutPage,
+        ContactPage,
+        HomePage,
+        TabsPage,
+        OrderPage,
+        SignIn,
+        SignUp,
+        WelcomePage
+    ],
+    imports: [
+        BrowserModule,
+        HttpModule,
+        IonicModule.forRoot(MyApp)
+    ],
+    bootstrap: [IonicApp],
+    entryComponents: [
+        MyApp,
+        AboutPage,
+        ContactPage,
+        HomePage,
+        TabsPage,
+        OrderPage,
+        SignIn,
+        SignUp,
+        WelcomePage
+    ],
+    providers: [Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]
+})
+export class AppModule { }

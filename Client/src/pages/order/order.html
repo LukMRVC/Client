@@ -1,0 +1,30 @@
+﻿<!--
+  Generated template for the NewPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar color="danger">
+        <ion-title>Objednávka</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <h2 *ngIf="html.length == 0">Prázdná objednávka</h2>
+    <ion-list>
+        <ion-item *ngFor="let object of html" (click)="removeItem(object.id)">
+            <ion-icon name="remove-circle" item-start></ion-icon>
+            {{object.name}}
+            <ion-note item-end>{{object.price}} Kč</ion-note>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <p>Celková cena: {{totalPrice}} Kč</p>
+        <ion-buttons end>
+            <button ion-button color="secondary" (click)="order()">Objednat</button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>
