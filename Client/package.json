@@ -22,6 +22,7 @@
     "@angular/platform-server": "2.2.1",
     "@ionic/storage": "1.1.7",
     "braintree-web": "^3.25.0",
+    "braintree-web-drop-in": "^1.8.1",
     "ionic-angular": "2.0.1",
     "ionic-native": "2.4.1",
     "ionicons": "3.0.0",

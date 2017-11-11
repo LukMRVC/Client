@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
 
 import * as braintree from 'braintree-web';
+import * as braintreeDropin from 'braintree-web-drop-in';
 
 /*
   Generated class for the checkout page.
@@ -27,65 +28,32 @@ export class CheckoutPage {
 
     ionViewDidLoad() {
         this.form = document.getElementById('form');
-        this.submitBtn = document.getElementById('submit_order');
-        this.createClient();
+        this.submitBtn = document.getElementById('submit-button');
+        this.createDropin();
     }
 
-    private createClient(): void{
-        this.client = braintree.client.create({
-            authorization: this.token
-        }, this.clientDidCreate)
-    }
-
-    public clientDidCreate(error, instance) {
-        braintree.hostedFields.create({
-            client: instance,
-            styles: {
-                'input': {
-                    'font-size': '16pt',
-                    'color': '#3A3A3A'
-                },
-
-                '.number': {
-                    'font-family': 'monospace'
-                },
-
-                '.valid': {
-                    'color': 'green'
-                }
-            },
-            fields: {
-                number: {
-                    selector: '#card-number'
-                },
-                cvv: {
-                    selector: '#cvv'
-                },
-                expirationDate: {
-                    selector: '#expiration-date'
-                }
-            }
-        }, this.hostedFieldsDidCreate);
-    }
-
-    hostedFieldsDidCreate(err, hostedFields) {
-        this.submitBtn.addEventListener('click', this.submitHandler.bind(null, hostedFields));
-        this.submitBtn.removeAttribute('disabled');
-    }
-
-    submitHandler(hostedFields, event) {
-        event.preventDefault();
-        this.submitBtn.setAttribute('disabled', 'disabled');
-
-        hostedFields.tokenize(function (err, payload) {
+    createDropin() {
+        braintreeDropin.create({
+            authorization: "sandbox_xsv5yyy8_ghv94zkc2x36bxwc",
+            selector: '#dropin-container'
+        }, (err, instance) => {
             if (err) {
-                this.submitBtn.removeAttribute('disabled');
-                console.error(err);
-            } else {
-                this.form['payment_method_nonce'].value = payload.nonce;
-                this.form.submit();
+                console.log(err);
             }
-        });
+
+            this.submitBtn.addEventListener('click', function () {
+                instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                        // Handle errors in requesting payment method
+                    }
+                    console.log("Payload: " + payload);
+                    // Send payload.nonce to your server
+                });
+            });
+
+            })
     }
+
+    
 
 }
