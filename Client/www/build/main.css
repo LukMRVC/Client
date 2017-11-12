@@ -22216,6 +22216,11 @@ sub {
   }
 }
 
+page-checkout .label-amount {
+  font-size: 14pt;
+  width: 100%;
+}
+
 page-home .center {
   text-align: center;
 }

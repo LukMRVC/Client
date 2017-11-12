@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
-import { NavController, NavParams, Events, ToastController, Tabs } from 'ionic-angular';
+import { NavController, NavParams, Events, ToastController, Tabs, LoadingController } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
 import { CheckoutPage } from '../checkout/checkout';
 
@@ -25,7 +25,7 @@ export class OrderPage {
     totalPrice: number = 0;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public event: Events, public globals: Globals,
-        public http: Http, public toastCtrl: ToastController, public tabs: Tabs) {
+        public http: Http, public toastCtrl: ToastController, public tabs: Tabs, private loading: LoadingController) {
         this.event.subscribe('order', (body) => {
             this.AddItem(body);
         });
@@ -45,6 +45,13 @@ export class OrderPage {
         toast.present();
     }
 
+    presentLoading() {
+        this.loading.create({
+            content: "Počkejte prosím...",
+            duration: 3500
+        }).present();
+    }
+
     order() {
         if (this.foodIndices.length == 0) {
             this.presentToast("Nemůžete odeslat prázdnou objednávku.");
@@ -61,8 +68,10 @@ export class OrderPage {
         let getReq = new Headers;
         getReq.append("Authorization", "Basic " + this.globals.getToken());
 
+        this.presentLoading();
         this.http.get("http://192.168.0.108:8088/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
-            this.navCtrl.push(CheckoutPage, { token: success });
+            
+            this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice });
         })
 
         

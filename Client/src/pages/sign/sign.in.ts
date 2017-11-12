@@ -2,8 +2,8 @@
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import { TabsPage } from '../tabs/tabs';
-import 'rxjs/add/operator/map';
 import { Globals } from "../../app/Globals";
+import 'rxjs/add/operator/map';
 /*
   Generated class for the login page.
 
