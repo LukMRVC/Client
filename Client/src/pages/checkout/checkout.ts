@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Events, LoadingController } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -26,18 +26,38 @@ export class CheckoutPage {
     static toastCtrl;
     static totalPrice;
     amount: number = 0;
+    static food;
+    static nav: NavController;
+    static events: Events;
+    static loading: LoadingController;
+    order;
     client;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public globals: Globals, public http: Http, private toastCtrl: ToastController) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public globals: Globals, public http: Http, private toastCtrl: ToastController,
+        public events: Events, public loading: LoadingController) {
+        //Braintree token
         this.token = this.navParams.get('token');
         this.amount = this.navParams.get('amount');
+        this.order = this.navParams.get('order');
     }
 
     ionViewDidLoad() {
+        CheckoutPage.loading = this.loading;
+        CheckoutPage.food = this.order;
+        CheckoutPage.events = this.events;
+        CheckoutPage.totalPrice = this.amount;
         CheckoutPage.toastCtrl = this.toastCtrl;
         CheckoutPage.sHttp = this.http;
+        CheckoutPage.nav = this.navCtrl;
         this.form = document.getElementById('form');
         this.createDropin();
+    }
+
+    static presentLoading(): void {
+        CheckoutPage.loading.create({
+            content: "Počkejte prosím",
+            duration: 3500,
+        }).present();
     }
 
     static presentToast(ctrl: ToastController, message: string): void {
@@ -49,6 +69,7 @@ export class CheckoutPage {
     }
 
     createDropin() {
+        //User auth token
         var authToken = this.globals.getToken();
         braintreeDropin.create({
             authorization: "sandbox_xsv5yyy8_ghv94zkc2x36bxwc",
@@ -63,15 +84,15 @@ export class CheckoutPage {
                 console.log(err);
             }
             let submitBtn = document.getElementById('submit-button');
-            submitBtn.addEventListener('click',  (event) => {
+            submitBtn.addEventListener('click', (event) => {
                 instance.requestPaymentMethod( (err, payload) => {
                     if (err) {
                         // Handle errors in requesting payment method
                         CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Platit můžete až po správném vyplnění vaší platební karty.");
                         return;
                     }
-
-                    payload.amount = "10.00";
+                    CheckoutPage.presentLoading();
+                    payload.amount = CheckoutPage.totalPrice;
                     payload.currency = "CZK";
                     console.log(payload.amount);
                     let headers = new Headers;
@@ -80,6 +101,14 @@ export class CheckoutPage {
                     headers.append('Authorization', 'Basic ' + authToken);
                     // Send payload.nonce to your server
                     CheckoutPage.sHttp.post("http://192.168.0.108:8088/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
+                       
+                        CheckoutPage.sHttp.post("http://192.168.0.108:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
+                            instance.teardown();
+                            CheckoutPage.events.publish("checkout", true);
+                            CheckoutPage.nav.pop();
+                        }, bad => {
+                            console.log(bad);
+                            })
                         
                     }, error => {
                         console.log(error);

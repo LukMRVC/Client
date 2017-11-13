@@ -29,6 +29,13 @@ export class OrderPage {
         this.event.subscribe('order', (body) => {
             this.AddItem(body);
         });
+        this.event.subscribe('checkout', (value: boolean) => {
+            if (value === true) {
+                this.presentToast("Úspěšná objednávka");
+                this.RemoveItems();
+                this.tabs.select(0);
+            }
+        })
         let orders = this.globals.GetOrder();
         for (let i = 0; i < orders.length; ++i) {
             this.AddItem(orders[i]);
@@ -71,7 +78,7 @@ export class OrderPage {
         this.presentLoading();
         this.http.get("http://192.168.0.108:8088/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
             
-            this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice });
+            this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice, order: order });
         })
 
         
