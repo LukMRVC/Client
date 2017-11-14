@@ -1,9 +1,9 @@
 ﻿import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 import { TabsPage } from "../tabs/tabs";
 import 'rxjs/add/operator/map';
-import { Globals } from "../../app/Globals";
 import { SignIn } from './sign.in';
 
 
@@ -18,13 +18,14 @@ import { SignIn } from './sign.in';
     templateUrl: 'signup.html'
 })
 export class SignUp {
+    signUpForm: FormGroup;
 
-    email = '';
-    username = '';
-    password = '';
-
-
-    constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, public toastCtrl: ToastController) { }
+    constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, public toastCtrl: ToastController, private formBuilder: FormBuilder) {
+        this.signUpForm = this.formBuilder.group({
+            email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern("\\w+@\\w+\\.\\w{1,3}"), Validators.required])],
+            password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(15), Validators.required])]
+        });
+    }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad signupPage');
@@ -40,17 +41,20 @@ export class SignUp {
     }
 
     signUp(): void {
+        if (!this.signUpForm.valid)
+        {
+            this.presentToast("Nesprávně zadané údaje!");
+            return;
+        }
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'text/plain');
         let body = {
-            username: this.username,
-            password: this.password,
-            email: this.email,
+            password: this.signUpForm.value.password,
+            email: this.signUpForm.value.email
         };
         this.http.post("http://192.168.0.108:8088/signup/", JSON.stringify(body), { headers: headers }).map(response => response.text()).subscribe(
             data => {
-                console.log(data);
                 this.navCtrl.push(SignIn);
                 this.navCtrl.remove(1, 1);
                 this.presentToast("Byl jste úspěšně registrován.");

@@ -12,21 +12,18 @@
 
 <ion-content padding>
     <ion-list center>
-        <ion-item>
-            <ion-label floating>Email</ion-label>
-            <ion-input type="email" [(ngModel)]="email"></ion-input>
-        </ion-item>
-        <ion-item>
-
-            <ion-label floating>Uživatelské jméno</ion-label>
-            <ion-input type="text" [(ngModel)]="username"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>Heslo</ion-label>
-            <ion-input type="password" [(ngModel)]="password"></ion-input>
-        </ion-item>
-        <ion-item>
-            <button ion-button color="secondary" (click)="signUp()">Registrovat</button>
-        </ion-item>
+        <form [formGroup]="signUpForm">
+            <ion-item>
+                <ion-label floating>Email</ion-label>
+                <ion-input type="email" formControlName="email"> <!---[(ngModel)]="email"--> </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Heslo</ion-label>
+                <ion-input type="password" formControlName="password"> <!---[(ngModel)]="password"-->  </ion-input>
+            </ion-item>
+            <ion-item>
+                <button ion-button color="secondary" (click)="signUp()">Registrovat</button>
+            </ion-item>
+        </form>
     </ion-list>
 </ion-content>

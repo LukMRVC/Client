@@ -1,6 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsPage } from '../tabs/tabs';
 import { Globals } from "../../app/Globals";
 import 'rxjs/add/operator/map';
@@ -15,11 +16,16 @@ import 'rxjs/add/operator/map';
     templateUrl: 'signin.html'
 })
 export class SignIn {
+    signInForm: FormGroup;
 
-    username: string = '';
-    password: string = '';
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private toastCtrl: ToastController, public globals: Globals) { }
+    constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private toastCtrl: ToastController, 
+    public globals: Globals, private formBuilder: FormBuilder) {
+        this.signInForm = this.formBuilder.group({
+            email: ['', Validators.compose([Validators.pattern("\\w+@\\w+\\.\\w{1,3}"), Validators.required])],
+            password: ['', Validators.compose([Validators.required])]
+        });        
+    }
 
     presentToast(): void {
         const toast = this.toastCtrl.create({
@@ -32,15 +38,17 @@ export class SignIn {
 
 
     private login(): void {
+        if (!this.signInForm.valid) {
+            this.presentToast();
+            return;
+        }
+
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Access-Control-Allow-Origin', '*');
-        headers.append('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        headers.append('Access-Control-Allow-Headers', ' Origin, Content - Type, X - Auth - Token');
         headers.append('Accept', 'text/plain');
         let body = {
-            username: this.username,
-            password: this.password,
+            email: this.signInForm.value.email,
+            password: this.signInForm.value.password,
         };
         this.http.post("http://192.168.0.108:8088/login/", JSON.stringify(body), { headers: headers }).map(Response => Response.text()).subscribe(
             data => {
