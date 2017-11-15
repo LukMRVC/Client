@@ -14,7 +14,7 @@ import { SignUp } from '../pages/sign/sign.up';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { OrderPage } from '../pages/order/order';
 import { CheckoutPage } from '../pages/checkout/checkout';
-
+import { Storage } from '@ionic/storage';
 
 @NgModule({
     declarations: [
@@ -47,6 +47,6 @@ import { CheckoutPage } from '../pages/checkout/checkout';
         CheckoutPage,
         WelcomePage
     ],
-    providers: [Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]
+    providers: [Storage, Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]
 })
 export class AppModule { }

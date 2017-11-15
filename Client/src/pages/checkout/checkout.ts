@@ -101,7 +101,6 @@ export class CheckoutPage {
                     headers.append('Authorization', 'Basic ' + authToken);
                     // Send payload.nonce to your server
                     CheckoutPage.sHttp.post("http://192.168.0.108:8088/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
-                       
                         CheckoutPage.sHttp.post("http://192.168.0.108:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
                             instance.teardown();
                             CheckoutPage.events.publish("checkout", true);
@@ -109,9 +108,10 @@ export class CheckoutPage {
                         }, bad => {
                             console.log(bad);
                             })
-                        
                     }, error => {
-                        console.log(error);
+                        instance.teardown();
+                        CheckoutPage.nav.pop();
+                        CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Chyba při provádění platby. Zkuste znovu");
                     })
                 });
             });
