@@ -1,15 +1,34 @@
-import { Component } from '@angular/core';
-
+﻿import { Component } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+    selector: 'page-about',
+    templateUrl: 'about.html'
 })
 export class AboutPage {
 
-  constructor(public navCtrl: NavController) {
+    menus: any;
 
-  }
+    constructor(public navCtrl: NavController, private storage: Storage) {
 
+    }
+
+    ionViewDidLoad()
+    {
+        this.getLocalMenus();
+    }
+
+    getLocalMenus() :any{
+        this.menus = this.storage.get("menus");
+        
+    }
+
+    saveLocalMenus() :void{
+
+    }
+
+    newMenu() {
+
+    }
 }

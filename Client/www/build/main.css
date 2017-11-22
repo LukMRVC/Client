@@ -22216,6 +22216,10 @@ sub {
   }
 }
 
+page-about .add-icon {
+  font-size: 26pt;
+}
+
 page-checkout .label-amount {
   font-size: 14pt;
   width: 100%;

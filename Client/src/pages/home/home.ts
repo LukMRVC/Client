@@ -73,7 +73,6 @@ export class HomePage {
                 this.actualFood.push(this.food[i]);
             }
         }
-
     }
 
     addToOrder(name, price, id) {
