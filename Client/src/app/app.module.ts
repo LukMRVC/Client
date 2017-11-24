@@ -14,6 +14,7 @@ import { SignUp } from '../pages/sign/sign.up';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { OrderPage } from '../pages/order/order';
 import { CheckoutPage } from '../pages/checkout/checkout';
+import { CustomMenuPage } from '../pages/customMenu/customMenu';
 import { Storage } from '@ionic/storage';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { Storage } from '@ionic/storage';
         ContactPage,
         HomePage,
         TabsPage,
+        CustomMenuPage,
         OrderPage,
         SignIn,
         SignUp,
@@ -39,6 +41,7 @@ import { Storage } from '@ionic/storage';
         MyApp,
         AboutPage,
         ContactPage,
+        CustomMenuPage,
         HomePage,
         TabsPage,
         OrderPage,

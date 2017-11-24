@@ -5,6 +5,15 @@ export class Globals {
     private Token: string;
 
     private Orders = [];
+    private Food;
+
+    public setFood(food) {
+        this.Food = food;
+    }
+
+    public getFood() {
+        return this.Food;
+    }
 
     constructor() {
         this.Token = "";

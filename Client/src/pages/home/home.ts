@@ -42,6 +42,7 @@ export class HomePage {
                 this.food.push(data[x]);
             }
             this.food.splice(0, 1);
+            this.globals.setFood(this.food);
             this.selectCategories();
 
         }, error => {
