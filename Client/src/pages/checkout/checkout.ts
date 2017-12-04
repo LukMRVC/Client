@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import * as braintree from 'braintree-web';
 import * as braintreeDropin from 'braintree-web-drop-in';
 
+
 /*
   Generated class for the checkout page.
 
@@ -33,8 +34,15 @@ export class CheckoutPage {
     order;
     client;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public globals: Globals, public http: Http, private toastCtrl: ToastController,
-        public events: Events, public loading: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public globals: Globals,
+        public http: Http,
+        private toastCtrl: ToastController,
+        public events: Events,
+        public loading: LoadingController
+    ) {
         //Braintree token
         this.token = this.navParams.get('token');
         this.amount = this.navParams.get('amount');
@@ -100,8 +108,8 @@ export class CheckoutPage {
                     headers.append('Accept', 'text/plain');
                     headers.append('Authorization', 'Basic ' + authToken);
                     // Send payload.nonce to your server
-                    CheckoutPage.sHttp.post("http://192.168.0.108:8088/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
-                        CheckoutPage.sHttp.post("http://192.168.0.108:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
+                    CheckoutPage.sHttp.post(this.globals.url + "/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
+                        CheckoutPage.sHttp.post("http://localhost:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
                             instance.teardown();
                             CheckoutPage.events.publish("checkout", true);
                             CheckoutPage.nav.pop();

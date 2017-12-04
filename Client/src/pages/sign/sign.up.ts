@@ -2,10 +2,12 @@
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
+import { Globals } from '../../app/Globals';
 import { TabsPage } from "../tabs/tabs";
 import 'rxjs/add/operator/map';
 import { SignIn } from './sign.in';
 
+import * as BCrypt from 'bcryptjs';
 
 /*
   Generated class for the signup page.
@@ -20,7 +22,14 @@ import { SignIn } from './sign.in';
 export class SignUp {
     signUpForm: FormGroup;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, public toastCtrl: ToastController, private formBuilder: FormBuilder) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private http: Http,
+        public toastCtrl: ToastController,
+        private formBuilder: FormBuilder,
+        private globals: Globals
+    ) {
         this.signUpForm = this.formBuilder.group({
             email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern("\\w+@\\w+\\.\\w{1,3}"), Validators.required])],
             password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(15), Validators.required])]
@@ -29,6 +38,7 @@ export class SignUp {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad signupPage');
+        console.log(BCrypt.genSaltSync(10));
     }
 
     presentToast(msg: string): void {
@@ -53,7 +63,7 @@ export class SignUp {
             password: this.signUpForm.value.password,
             email: this.signUpForm.value.email
         };
-        this.http.post("http://192.168.0.108:8088/signup/", JSON.stringify(body), { headers: headers }).map(response => response.text()).subscribe(
+        this.http.post(this.globals.url + "/signup/", JSON.stringify(body), { headers: headers }).map(response => response.text()).subscribe(
             data => {
                 this.navCtrl.push(SignIn);
                 this.navCtrl.remove(1, 1);

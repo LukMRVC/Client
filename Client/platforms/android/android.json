@@ -51,9 +51,6 @@
         },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "io.cordova.myappd4e84c"
-        },
-        "cordova-plugin-ionic-webview": {
-            "PACKAGE_NAME": "io.ionic.starter"
         }
     },
     "dependent_plugins": {},
@@ -98,7 +95,6 @@
         "cordova-plugin-console": "1.0.5",
         "cordova-plugin-statusbar": "2.2.1",
         "cordova-plugin-device": "1.1.4",
-        "cordova-plugin-splashscreen": "4.0.3",
-        "cordova-plugin-ionic-webview": "1.1.16"
+        "cordova-plugin-splashscreen": "4.0.3"
     }
 }

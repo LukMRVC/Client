@@ -19,7 +19,14 @@ export class HomePage {
     mainCategories = [];
     actualFood = [];
 
-    constructor(public navCtrl: NavController, public http: Http, public app: App, public globals: Globals, public alertCtrl: AlertController, public events: Events) {
+    constructor(
+        public navCtrl: NavController,
+        public http: Http,
+        public app: App,
+        public globals: Globals,
+        public alertCtrl: AlertController,
+        public events: Events
+    ) {
         this.populateMenuData();
     }
 
@@ -32,7 +39,7 @@ export class HomePage {
     populateMenuData() {
         if (this.called === true)
             return;
-        let link = "http://192.168.0.108:8088/get_food/";
+        let link = this.globals.url + "/get_food/";
         let headers = new Headers;
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'text/json');
@@ -74,6 +81,7 @@ export class HomePage {
                 this.actualFood.push(this.food[i]);
             }
         }
+
     }
 
     addToOrder(name, price, id) {

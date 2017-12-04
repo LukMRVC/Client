@@ -1,8 +1,10 @@
 ﻿import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController, Platform } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController, Platform, Events } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomePage } from '../home/home';
+import { Storage } from '@ionic/storage';
 import { Globals } from '../../app/Globals';
+import { ModalPage } from './ModalPage';
 
 /*
   Generated class for the CustomMenu page.
@@ -15,61 +17,52 @@ import { Globals } from '../../app/Globals';
     templateUrl: 'customMenu.html'
 })
 export class CustomMenuPage {
-    price: any = 5;
-    mainCategory;
-    subCategory;
-    actualFood;
+    price: any = 0;
+    menu = [];
+    idStringArr = "";
+
     customMenuForm: FormGroup;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private modalCtrl: ModalController,
-        public globals: Globals) {
+    constructor(public navCtrl: NavController,
+        public navParams: NavParams,
+        private formBuilder: FormBuilder,
+        private modalCtrl: ModalController,
+        public events: Events,
+    ) {
         this.customMenuForm = this.formBuilder.group({
             menuName: ['', Validators.compose([Validators.maxLength(20), Validators.required])]
         });
-       
+        this.events.subscribe('addfood', (body) => {
+            this.AddItem(body);
+        });
+
+     
     }
     //Use a modal
     addFood() {
-        this.modalCtrl.create(ModalPage, { category: this.mainCategory, sub: this.subCategory, food: this.actualFood }).present();
+        let modal = this.modalCtrl.create(ModalPage);
+        modal.present();
+    }
 
+    AddItem(item): void {
+     
+        this.price += item.price;
+        this.idStringArr += item.id + ',';
     }
 
     saveCustomMenu() {
-        
+      /*  let menu = {
+            name: this.customMenuForm.value.menuName,
+            menu: this.menu,
+            price: this.price
+        };*/
+       
     }
 
 
     ionViewDidLoad() {
-        let food = this.globals.getFood();
-        for (let i = 0; i < food.length; ++i) {
-            if (food[i][2] == 1) {
-                if (food[i][14].length == 1) {
-                    this.mainCategory.push(food[i]);
-                } else {
-                    this.subCategory.push(food[i]);
-                }
-            } else {
-                this.actualFood.push(food[i]);
-            }
-        }
+       
     }
 
 }
 
 
-@Component({
-    templateUrl: 'modal.html'
-})
-export class ModalPage {
-    main;
-    sub;
-    food;
-    constructor(
-        public platfrom: Platform,
-        public params: NavParams,
-        public viewCtrl: ViewController
-    ) {
-        this.main = this.params.get("category");
-        this.sub = this.params.get("sub");
-        this.food = this.params.get("food");
-    }
-}

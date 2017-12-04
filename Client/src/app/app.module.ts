@@ -14,7 +14,8 @@ import { SignUp } from '../pages/sign/sign.up';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { OrderPage } from '../pages/order/order';
 import { CheckoutPage } from '../pages/checkout/checkout';
-import { CustomMenuPage } from '../pages/customMenu/customMenu';
+import { CustomMenuPage } from '../pages/customMenu/CustomMenu';
+import { ModalPage } from '../pages/customMenu/ModalPage';
 import { Storage } from '@ionic/storage';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { Storage } from '@ionic/storage';
         ContactPage,
         HomePage,
         TabsPage,
+        ModalPage,
         CustomMenuPage,
         OrderPage,
         SignIn,
@@ -48,6 +50,7 @@ import { Storage } from '@ionic/storage';
         SignIn,
         SignUp,
         CheckoutPage,
+        ModalPage,
         WelcomePage
     ],
     providers: [Storage, Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]

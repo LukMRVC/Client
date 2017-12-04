@@ -24,7 +24,7 @@
             {{cat[0]}}
         </ion-list-header>
         <div *ngFor="let f of food">
-            <ion-item *ngIf="cat[14] == f[14].charAt(0)" (click)="addToOrder(f[0], f[3], f[1])">
+            <ion-item *ngIf="cat[14] == f[14].charAt(0)" (click)="addToMenu(f[0], f[3], f[1])">
                 <ion-icon name='add' item-start></ion-icon>
                 {{f[0]}}
                 <span *ngFor="let subcat of sub">

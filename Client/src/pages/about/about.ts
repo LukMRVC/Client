@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NavController, NavParams } from 'ionic-angular';
-import { CustomMenuPage } from '../customMenu/customMenu';
+import { NavController } from 'ionic-angular';
+import { CustomMenuPage } from '../customMenu/CustomMenu';
 
 @Component({
     selector: 'page-about',
@@ -9,22 +9,30 @@ import { CustomMenuPage } from '../customMenu/customMenu';
 })
 export class AboutPage {
 
-    menus: any;
+    public menus: any;
 
-    constructor(public navCtrl: NavController, private storage: Storage, public navParams: NavParams) {
-
+    constructor(
+        public navCtrl: NavController,
+        private storage: Storage
+        
+    ) {
+       
     }
 
-    ionViewDidLoad()
-    {
+    ionViewWillEnter() {
         this.getLocalMenus();
     }
 
-    getLocalMenus() :any{
-        this.menus = this.storage.get("menus");
+    getLocalMenus(): any {
+        this.storage.get("local_menus").then(save => {
+            this.menus = save;
+        });
+       
+
+
     }
 
-    saveLocalMenus() :void{
+    saveLocalMenus(): void {
 
     }
 

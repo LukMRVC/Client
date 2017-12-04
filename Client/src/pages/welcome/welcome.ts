@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { SignIn } from '../sign/sign.in';
 import { SignUp } from '../sign/sign.up';
 import { TabsPage } from '../tabs/tabs';
@@ -22,25 +22,40 @@ import 'rxjs/add/operator/map';
 })
 export class WelcomePage {
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private http: Http, private globals: Globals) {
+    public token: any;
+
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private platform: Platform,
+        private http: Http,
+        private globals: Globals,
+        private storage: Storage
+    ) {
         this.tryLogin();
     }
 
+    ionViewDidLoad() {
+        
+    }
 
     tryLogin() {
         this.storage.get('saved_token').then((token) => {
+            console.log(token);
             let body = {
                 token: token
             }
-            this.http.post("http://192.168.0.108:8088/login/", JSON.stringify(body), {}).map(res => res.text()).subscribe(success => {
+            this.http.post(this.globals.url + "/login/", JSON.stringify(body), {}).map(res => res.text()).subscribe(success => {
                 this.storage.set('saved_token', success);
                 this.globals.setToken(success);
                 this.navCtrl.push(TabsPage);
                 this.navCtrl.setRoot(TabsPage);
             }, error => {
-
+                console.log(error);
+                });
+        }).catch((exception) => {
+            console.log("Exception: ", exception);
             });
-        });
     }
 
     login() {

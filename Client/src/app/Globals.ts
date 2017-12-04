@@ -4,6 +4,8 @@
 export class Globals {
     private Token: string;
 
+    public url: string = "http://localhost:8088";
+
     private Orders = [];
     private Food;
 

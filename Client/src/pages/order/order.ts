@@ -24,8 +24,16 @@ export class OrderPage {
 
     totalPrice: number = 0;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public event: Events, public globals: Globals,
-        public http: Http, public toastCtrl: ToastController, public tabs: Tabs, private loading: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public event: Events,
+        public globals: Globals,
+        public http: Http,
+        public toastCtrl: ToastController,
+        public tabs: Tabs,
+        private loading: LoadingController
+    ) {
         this.event.subscribe('order', (body) => {
             this.AddItem(body);
         });
@@ -76,14 +84,14 @@ export class OrderPage {
         getReq.append("Authorization", "Basic " + this.globals.getToken());
 
         this.presentLoading();
-        this.http.get("http://192.168.0.108:8088/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
+        this.http.get(this.globals.url + "/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
             
             this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice, order: order });
         })
 
         
 
-      /*  this.http.post("http://192.168.0.108:8088/order/", JSON.stringify(order), { headers: headers }).map(res => res.text()).subscribe(
+      /*  this.http.post(this.globals.url + "/order/", JSON.stringify(order), { headers: headers }).map(res => res.text()).subscribe(
             res => {
                 this.presentToast("Úspěšná objednávka");
                 this.RemoveItems();
