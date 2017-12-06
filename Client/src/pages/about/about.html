@@ -1,5 +1,5 @@
 ﻿<ion-header>
-  <ion-navbar>
+  <ion-navbar color="danger">
     <ion-title>
       Vlastní menu
     </ion-title>
@@ -12,8 +12,16 @@
     </button>
     <ion-list>
         <ion-item *ngFor="let menu of menus">
-            {{menu.name}}
-            {{menu.price}}
+            <button ion-button outline color="primary" (click)="addToOrder(menu)" class="order-button">
+                <ion-icon name='add' item-start></ion-icon>
+                 &nbsp;{{menu.name}}
+            </button>
+            <span class="price">
+                <ion-note item-end class="price-note">
+                    {{menu.price}} Kč
+                </ion-note>
+                <button ion-button color="danger" (click)="deleteMenu(menu.name)">Smazat</button>
+            </span>
         </ion-item>
     </ion-list>
 </ion-content>

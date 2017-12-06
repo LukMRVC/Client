@@ -1,5 +1,5 @@
-﻿import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController, Platform, Events } from 'ionic-angular';
+﻿import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, ModalController, ViewController, Platform, Events, Content } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomePage } from '../home/home';
 import { Storage } from '@ionic/storage';
@@ -17,9 +17,13 @@ import { ModalPage } from './ModalPage';
     templateUrl: 'customMenu.html'
 })
 export class CustomMenuPage {
+    @ViewChild(Content) content: Content;
     price: any = 0;
     menu = [];
+    storedMenus = [];
     idStringArr = "";
+
+
 
     customMenuForm: FormGroup;
     constructor(public navCtrl: NavController,
@@ -27,6 +31,7 @@ export class CustomMenuPage {
         private formBuilder: FormBuilder,
         private modalCtrl: ModalController,
         public events: Events,
+        private storage: Storage
     ) {
         this.customMenuForm = this.formBuilder.group({
             menuName: ['', Validators.compose([Validators.maxLength(20), Validators.required])]
@@ -44,22 +49,31 @@ export class CustomMenuPage {
     }
 
     AddItem(item): void {
-     
+        this.menu.push(item);
         this.price += item.price;
-        this.idStringArr += item.id + ',';
+       // this.idStringArr += item.id + ',';
+    }
+
+    ionViewDidLoad() {
+        this.storage.get("local_menus").then((data) => {
+            for (let i = 0; i < data.length; ++i) {
+                this.storedMenus.push(data[i]);
+            }
+        });
+        console.log(this.storedMenus);
     }
 
     saveCustomMenu() {
-      /*  let menu = {
-            name: this.customMenuForm.value.menuName,
-            menu: this.menu,
-            price: this.price
-        };*/
-       
-    }
-
-
-    ionViewDidLoad() {
+        if (this.customMenuForm.valid && this.price != 0 ) {
+            let menu = {
+                name: this.customMenuForm.value.menuName,
+                menu: this.menu,
+                price: this.price
+            };
+            this.storedMenus.push(menu);
+            this.storage.set("local_menus", this.storedMenus);
+            this.navCtrl.pop();
+        }
        
     }
 

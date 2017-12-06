@@ -13,10 +13,12 @@
 <ion-content padding>
     <h2 *ngIf="html.length == 0">Prázdná objednávka</h2>
     <ion-list>
-        <ion-item *ngFor="let object of html" (click)="removeItem(object.id)">
-            <ion-icon name="remove-circle" item-start></ion-icon>
-            {{object.name}}
-            <ion-note item-end>{{object.price}} Kč</ion-note>
+        <ion-item *ngFor="let object of html" (click)="removeItem(object)" (press)="chooseFood(object)">
+          <!--  <span *ngIf="object.hasOwnProperty('menu')" (press)="chooseFood(object.menu)">-->
+                <ion-icon name="remove-circle" item-start></ion-icon>
+                {{object.name}}
+                <ion-note item-end>{{object.price}} Kč</ion-note>
+           <!--  </span>-->
         </ion-item>
     </ion-list>
 </ion-content>

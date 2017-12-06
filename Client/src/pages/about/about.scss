@@ -1,5 +1,23 @@
 page-about {
-    .add-button{
+    .add-button {
         font-size: 28pt;
+    }
+
+    .order-button{
+        font-size: 11pt!important;
+    }
+
+    .price {
+        float: right;
+    }
+
+    .price button{
+        margin: 0;
+        margin-top: -7px;
+    }
+
+    .price-note {
+        margin-right: 0.5em;
+        color: #333;
     }
 }

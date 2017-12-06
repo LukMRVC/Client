@@ -22220,6 +22220,24 @@ page-about .add-button {
   font-size: 28pt;
 }
 
+page-about .order-button {
+  font-size: 11pt !important;
+}
+
+page-about .price {
+  float: right;
+}
+
+page-about .price button {
+  margin: 0;
+  margin-top: -7px;
+}
+
+page-about .price-note {
+  margin-right: 0.5em;
+  color: #333;
+}
+
 page-checkout .label-amount {
   font-size: 14pt;
   width: 100%;
@@ -22227,6 +22245,11 @@ page-checkout .label-amount {
 
 page-home .center {
   text-align: center;
+}
+
+page-home .list-header, page-home .list-header * {
+  margin-bottom: 0;
+  color: #444;
 }
 
 page-home .ionic-logo {
@@ -22283,6 +22306,10 @@ page-home .subcategory {
   float: none;
   padding-left: 0.6em;
   color: #808080;
+}
+
+page-home .order-button {
+  font-size: 10pt !important;
 }
 
 @-webkit-keyframes spin {

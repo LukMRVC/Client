@@ -27,14 +27,16 @@
                 <button ion-button color="primary" (click)="addFood()">Přidat</button>
                 <button ion-button color="secondary" (click)="saveCustomMenu()">Uložit</button>
             </ion-item>
-             <ion-item *ngIf="menu.length != 0">
-                 <ion-list>
-                     <ion-item *ngFor="let item of menu">
-                         {{item.name}}
-                         {{item.price}}
-                     </ion-item>
-                 </ion-list>
-             </ion-item>
+            <ion-item *ngIf="menu.length != 0">
+                <ion-list>
+                    <ion-list-header>Vybrané potraviny</ion-list-header>
+                    <ion-item *ngFor="let item of menu">
+                        {{item.name}}
+                        {{item.price}} Kč
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+           
         </form>
     </ion-list>
 </ion-content>

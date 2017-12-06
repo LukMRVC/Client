@@ -33,14 +33,18 @@ export class Globals {
         this.Orders.push(order);
     }
 
+    public RemoveMenuFromOrder(menu) {
+        this.Orders.splice(this.Orders.indexOf(menu), 1);
+    }
+
     public RemoveFromOrder(id) {
-        for (let i = 0; i < this.Orders.length; ++i) {
-            console.log(this.Orders[i]);
+        this.Orders.splice(this.Orders.indexOf(id), 1);
+        /*for (let i = 0; i < this.Orders.length; ++i) {
             if (this.Orders[i].id == id) {
                 this.Orders.splice(i, 1);
                 break;
             }
-        }
+        }*/
     }
 
     public RemoveOrders() {

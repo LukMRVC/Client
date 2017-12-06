@@ -21,7 +21,6 @@ export class ModalPage {
 
     ionViewDidLoad() {
         let food = this.globals.getFood();
-        console.log(food);
         for (let i = 0; i < food.length; ++i) {
             if (food[i][2] == 1) {
                 if (food[i][14].length == 1) {

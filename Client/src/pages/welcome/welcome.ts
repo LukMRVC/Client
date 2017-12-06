@@ -41,7 +41,6 @@ export class WelcomePage {
 
     tryLogin() {
         this.storage.get('saved_token').then((token) => {
-            console.log(token);
             let body = {
                 token: token
             }
