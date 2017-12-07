@@ -146,6 +146,13 @@ export class OrderPage {
         this.html.push(menu);
     }
 
+    private recalcPrice() {
+        this.totalPrice = 0;
+        for (let i = 0; i < this.html.length; ++i) {
+            this.totalPrice += this.html[i].price;
+        }
+    }
+
     public chooseFood(object) {
         if (!object.hasOwnProperty('menu')) {
             return;
@@ -163,14 +170,18 @@ export class OrderPage {
                     let diff = this.foodIndices.filter(x => data.indexOf(x) == -1);
                     for (let i = 0; i < object.menu.length; ++i) {
                         object.menu[i].checked = false;
+                        
                     }
+                    object.price = 0;
                     for (let i = 0; i < data.length; ++i) {
                         for (let j = 0; j < object.menu.length; ++j) {
                             if (object.menu[j].id == data[i]) {
                                 object.menu[j].checked = true;
+                                object.price += object.menu[j].price;
                             }
                         }
                     }
+                    this.recalcPrice();
                  //   console.log("After input: ", object.menu);
                 }
             }]
