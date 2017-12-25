@@ -12,10 +12,12 @@ import { Globals } from './Globals';
 import { SignIn } from '../pages/sign/sign.in';
 import { SignUp } from '../pages/sign/sign.up';
 import { WelcomePage } from '../pages/welcome/welcome';
-import { OrderPage } from '../pages/order/order';
+import { OrderPage, PopoverPage } from '../pages/order/order';
 import { CheckoutPage } from '../pages/checkout/checkout';
 import { CustomMenuPage } from '../pages/customMenu/CustomMenu';
 import { ModalPage } from '../pages/customMenu/ModalPage';
+import { OrderHistoryPage } from '../pages/orderhistory/orderhistory';
+
 import { Storage } from '@ionic/storage';
 
 @NgModule({
@@ -31,7 +33,9 @@ import { Storage } from '@ionic/storage';
         SignIn,
         SignUp,
         CheckoutPage,
-        WelcomePage
+        WelcomePage,
+        OrderHistoryPage,
+        PopoverPage
     ],
     imports: [
         BrowserModule,
@@ -50,8 +54,10 @@ import { Storage } from '@ionic/storage';
         SignIn,
         SignUp,
         CheckoutPage,
+        OrderHistoryPage,
         ModalPage,
-        WelcomePage
+        WelcomePage,
+        PopoverPage
     ],
     providers: [Storage, Badge, StatusBar, Globals, Splashscreen, { provide: ErrorHandler, useClass: IonicErrorHandler }]
 })

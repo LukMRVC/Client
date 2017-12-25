@@ -1,8 +1,9 @@
 ﻿import { Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
-import { NavController, NavParams, Events, ToastController, Tabs, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, Events, ToastController, Tabs, LoadingController, AlertController, PopoverController, ViewController } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
 import { CheckoutPage } from '../checkout/checkout';
+import { OrderHistoryPage } from '../orderhistory/orderhistory';
 
 
 
@@ -33,7 +34,8 @@ export class OrderPage {
         public toastCtrl: ToastController,
         public tabs: Tabs,
         private loading: LoadingController,
-        private alertCtrl: AlertController
+        private alertCtrl: AlertController,
+        private popoverCtrl: PopoverController
     ) {
         this.event.subscribe('order', (body) => {
             this.AddItem(body);
@@ -242,5 +244,36 @@ export class OrderPage {
         }
     }
 
+    private presentPopover(event) {
+        let popover = this.popoverCtrl.create(PopoverPage);
+        popover.present({
+            ev: event
+        });
+    }
 
+
+}
+
+
+@Component({
+    template: ` 
+        <ion-list>
+            <button ion-item (click)="showHistory()">Historie</button>
+        </ion-list>    
+`
+})
+
+export class PopoverPage {
+    constructor(
+        public viewCtrl: ViewController,
+        public navCtrl: NavController
+    ) { }
+
+    close() {
+        this.viewCtrl.dismiss();
+    }
+
+    showHistory(): void {
+        this.navCtrl.push(OrderHistoryPage);
+    }
 }

@@ -22326,6 +22326,16 @@ page-order .note-md {
   color: #333;
 }
 
+page-OrderHistory .date {
+  font-size: 12pt;
+  color: #000;
+}
+
+page-OrderHistory .order {
+  font-size: 10pt;
+  color: #000;
+}
+
 page-welcome #welcome {
   background: #F7F0F0;
 }

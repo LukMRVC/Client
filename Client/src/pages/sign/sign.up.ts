@@ -8,6 +8,8 @@ import 'rxjs/add/operator/map';
 import { SignIn } from './sign.in';
 
 import * as BCrypt from 'bcryptjs';
+import * as CryptJS from 'crypto-js';
+import * as CircularJSON from 'circular-json';
 
 /*
   Generated class for the signup page.
@@ -21,6 +23,9 @@ import * as BCrypt from 'bcryptjs';
 })
 export class SignUp {
     signUpForm: FormGroup;
+
+    key = CryptJS.enc.Utf8.parse('1x3v9r8tp:f?.485');
+    iv = CryptJS.enc.Utf8.parse('8808880080808568');
 
     constructor(
         public navCtrl: NavController,
@@ -38,7 +43,21 @@ export class SignUp {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad signupPage');
-        console.log(BCrypt.genSaltSync(10));
+       /* let body = {
+            password: 'encpass',
+            email: 'encemail'
+        };
+        
+        let stringified = CircularJSON.stringify(CryptJS.AES.encrypt(JSON.stringify(body), key,{
+            keySize: 256 / 8,
+            iv: iv,
+            mode: CryptJS.mode.CBC,
+            padding: CryptJS.pad.Pkcs7
+        }));
+        let bytes = CryptJS.AES.decrypt(CircularJSON.parse(stringified.toString()), 'Dbj3l0hL4S/YWDDlNKd2t/rL3t1hrf5Ie3+YyRttyM8=');
+        console.log(CircularJSON.parse(stringified.toString()));
+        let decrypted = JSON.parse(bytes.toString(CryptJS.enc.Utf8));
+        console.log("Decrypted: ", decrypted);*/
     }
 
     presentToast(msg: string): void {
@@ -63,7 +82,14 @@ export class SignUp {
             password: this.signUpForm.value.password,
             email: this.signUpForm.value.email
         };
-        this.http.post(this.globals.url + "/signup/", JSON.stringify(body), { headers: headers }).map(response => response.text()).subscribe(
+        let stringified = CircularJSON.stringify(CryptJS.AES.encrypt(JSON.stringify(body), this.key, {
+            keySize: 128 / 8,
+            iv: this.iv,
+            mode: CryptJS.mode.CBC,
+            padding: CryptJS.pad.Pkcs7
+        }));
+        //let encrypt = CryptJS.AES.encrypt, 'Dbj3l0hL4S/YWDDlNKd2t/rL3t1hrf5Ie3+YyRttyM8=');
+        this.http.post(this.globals.url + "/signup/", stringified, { headers: headers }).map(response => response.text()).subscribe(
             data => {
                 this.navCtrl.push(SignIn);
                 this.navCtrl.remove(1, 1);
