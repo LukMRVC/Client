@@ -8,7 +8,7 @@ import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
-
+import * as rsa from 'rsa-node';
 
 /*
   Generated class for the welcome page.
@@ -32,14 +32,25 @@ export class WelcomePage {
         private globals: Globals,
         private storage: Storage
     ) {
-        this.tryLogin();
+        //this.tryLogin();
     }
 
     ionViewDidLoad() {
-        
+        this.getRsaKey();
     }
 
-    tryLogin() {
+    private getRsaKey(): void {
+        this.http.get(this.globals.url + "/get_key/", {}).map(res => res.text()).subscribe(key => {
+            console.log(key);
+            this.globals.RSAKeyString = key;
+        }, error => {
+            console.log("Error: ", error);
+            setTimeout(this.getRsaKey(), 4000);
+            })
+    }
+
+
+    public tryLogin() {
         this.storage.get('saved_token').then((token) => {
             let body = {
                 token: token

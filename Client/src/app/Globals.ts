@@ -4,7 +4,11 @@
 export class Globals {
     private Token: string;
 
-    public url: string = "http://localhost:8088";
+    public readonly url: string = "http://localhost:8088";
+    public RSAKeyString: string;
+
+    public AESKey = [23, 54, 87, 23, 2, 100, 4, 8, 8, 46, 102, 48, 12, 123, 14, 2];
+    
 
     private Orders = [];
     private Food;

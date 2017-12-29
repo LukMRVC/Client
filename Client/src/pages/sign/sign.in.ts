@@ -13,6 +13,9 @@ import 'rxjs/add/operator/map';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
+import * as nodeRsa from 'node-rsa';
+
 @Component({
     selector: 'page-signin',
     templateUrl: 'signin.html'
@@ -54,13 +57,13 @@ export class SignIn {
             this.presentToast();
             return;
         }
-
+        let key = new nodeRsa(this.globals.RSAKeyString, 'pkcs8-public-pem', 'pkcs1_oaep');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'text/plain');
         let body = {
-            email: this.signInForm.value.email,
-            password: this.signInForm.value.password,
+            email: key.encrypt(this.signInForm.value.email, 'hex'),
+            password: key.encrypt(this.signInForm.value.password, 'hex')
         };
         this.http.post(this.globals.url + "/login/", JSON.stringify(body), { headers: headers }).map(Response => Response.text()).subscribe(
             data => {

@@ -7,9 +7,7 @@ import { TabsPage } from "../tabs/tabs";
 import 'rxjs/add/operator/map';
 import { SignIn } from './sign.in';
 
-import * as BCrypt from 'bcryptjs';
-import * as CryptJS from 'crypto-js';
-import * as CircularJSON from 'circular-json';
+import * as nodeRsa from 'node-rsa';
 
 /*
   Generated class for the signup page.
@@ -24,8 +22,6 @@ import * as CircularJSON from 'circular-json';
 export class SignUp {
     signUpForm: FormGroup;
 
-    key = CryptJS.enc.Utf8.parse('1x3v9r8tp:f?.485');
-    iv = CryptJS.enc.Utf8.parse('8808880080808568');
 
     constructor(
         public navCtrl: NavController,
@@ -70,26 +66,24 @@ export class SignUp {
     }
 
     signUp(): void {
+        
+
         if (!this.signUpForm.valid)
         {
             this.presentToast("Nesprávně zadané údaje!");
             return;
         }
+        let key = new nodeRsa(this.globals.RSAKeyString, 'pkcs8-public-pem', 'pkcs1_oaep');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'text/plain');
         let body = {
-            password: this.signUpForm.value.password,
-            email: this.signUpForm.value.email
+            password: key.encrypt(this.signUpForm.value.password, 'hex'),
+            email: key.encrypt(this.signUpForm.value.email, 'hex')
         };
-        let stringified = CircularJSON.stringify(CryptJS.AES.encrypt(JSON.stringify(body), this.key, {
-            keySize: 128 / 8,
-            iv: this.iv,
-            mode: CryptJS.mode.CBC,
-            padding: CryptJS.pad.Pkcs7
-        }));
+
         //let encrypt = CryptJS.AES.encrypt, 'Dbj3l0hL4S/YWDDlNKd2t/rL3t1hrf5Ie3+YyRttyM8=');
-        this.http.post(this.globals.url + "/signup/", stringified, { headers: headers }).map(response => response.text()).subscribe(
+        this.http.post(this.globals.url + "/signup/", body, { headers: headers }).map(response => response.text()).subscribe(
             data => {
                 this.navCtrl.push(SignIn);
                 this.navCtrl.remove(1, 1);

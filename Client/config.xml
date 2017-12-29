@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<widget id="io.ionic.starter" version="0.8.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" defaultlocale="cs-CZ">
+<widget defaultlocale="cs-CZ" id="io.ionic.starter" version="0.8.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Client</name>
   <description>A client application for my final project</description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">Lukas Moravec</author>
