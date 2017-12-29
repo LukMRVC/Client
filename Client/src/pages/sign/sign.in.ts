@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsPage } from '../tabs/tabs';
 import { Globals } from "../../app/Globals";
 import { Storage } from '@ionic/storage';
-import { SQLite } from 'ionic-native';
 import 'rxjs/add/operator/map';
 /*
   Generated class for the login page.
@@ -23,8 +22,6 @@ import * as nodeRsa from 'node-rsa';
 export class SignIn {
     signInForm: FormGroup;
 
-    private database: SQLite;
-
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
@@ -38,7 +35,6 @@ export class SignIn {
             email: ['', Validators.compose([Validators.pattern("\\w+@\\w+\\.\\w{1,3}"), Validators.required])],
             password: ['', Validators.compose([Validators.required])]
         });
-        this.database = new SQLite();
     }
 
 
@@ -57,10 +53,12 @@ export class SignIn {
             this.presentToast();
             return;
         }
+        //Importuje veřejný RSA klíč z PEM stringu
         let key = new nodeRsa(this.globals.RSAKeyString, 'pkcs8-public-pem', 'pkcs1_oaep');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'text/plain');
+        //Tělo obsahuje zašifrovaná data
         let body = {
             email: key.encrypt(this.signInForm.value.email, 'hex'),
             password: key.encrypt(this.signInForm.value.password, 'hex')

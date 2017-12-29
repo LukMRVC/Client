@@ -32,10 +32,11 @@ export class WelcomePage {
         private globals: Globals,
         private storage: Storage
     ) {
-        //this.tryLogin();
+        this.tryLogin();
     }
 
     ionViewDidLoad() {
+        //získá veřejný RSA klíč od serveru
         this.getRsaKey();
     }
 
@@ -44,12 +45,13 @@ export class WelcomePage {
             console.log(key);
             this.globals.RSAKeyString = key;
         }, error => {
+            //Pokud se klíč nepodaří získat, bude se zkoušet dokola každé 4 sekundy
             console.log("Error: ", error);
             setTimeout(this.getRsaKey(), 4000);
             })
     }
 
-
+    //Zkusí se přihlásit pomocí uloženého tokenu, pokud ještě nevypršela jeho platnost
     public tryLogin() {
         this.storage.get('saved_token').then((token) => {
             let body = {

@@ -43,13 +43,14 @@ export class CheckoutPage {
         public events: Events,
         public loading: LoadingController
     ) {
-        //Braintree token
+        //Získá předáná data 
         this.token = this.navParams.get('token');
         this.amount = this.navParams.get('amount');
         this.order = this.navParams.get('order');
     }
 
     ionViewDidLoad() {
+        //Nastaví statické proménně
         CheckoutPage.loading = this.loading;
         CheckoutPage.food = this.order;
         CheckoutPage.events = this.events;
@@ -60,14 +61,14 @@ export class CheckoutPage {
         this.form = document.getElementById('form');
         this.createDropin();
     }
-
+    //Zobrazí načítání
     static presentLoading(): void {
         CheckoutPage.loading.create({
             content: "Počkejte prosím",
             duration: 3500,
         }).present();
     }
-
+    //Zobrazí toast (text v malém bloku)
     static presentToast(ctrl: ToastController, message: string): void {
         ctrl.create({
             position: 'bottom',
@@ -76,6 +77,7 @@ export class CheckoutPage {
         }).present();
     }
 
+    //Vytvoří UI integorované braintree platební brány
     createDropin() {
         //User auth token
         var authToken = this.globals.getToken();
@@ -84,7 +86,7 @@ export class CheckoutPage {
             selector: '#dropin-container',
             paypal: {
                 flow: 'checkout',
-                amount: '10.00',
+                amount: this.amount,
                 currency: 'CZK'
             }
         }, (err, instance) => {
@@ -95,10 +97,11 @@ export class CheckoutPage {
             submitBtn.addEventListener('click', (event) => {
                 instance.requestPaymentMethod( (err, payload) => {
                     if (err) {
-                        // Handle errors in requesting payment method
+                        // Kdyby někdo chtěl zaplatit, než vyplní formulář
                         CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Platit můžete až po správném vyplnění vaší platební karty.");
                         return;
                     }
+                    //Zobrazí načítání
                     CheckoutPage.presentLoading();
                     payload.amount = CheckoutPage.totalPrice;
                     payload.currency = "CZK";
@@ -107,7 +110,7 @@ export class CheckoutPage {
                     headers.append('Content-Type', 'application/json');
                     headers.append('Accept', 'text/plain');
                     headers.append('Authorization', 'Basic ' + authToken);
-                    // Send payload.nonce to your server
+                    // Odešle nonce serveru a nějaké další informace
                     CheckoutPage.sHttp.post(this.globals.url + "/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
                         CheckoutPage.sHttp.post("http://localhost:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
                             instance.teardown();
@@ -117,6 +120,7 @@ export class CheckoutPage {
                             console.log(bad);
                             })
                     }, error => {
+                        //instance.teardown() smaže braintree formulář
                         instance.teardown();
                         CheckoutPage.nav.pop();
                         CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Chyba při provádění platby. Zkuste znovu");

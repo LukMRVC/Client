@@ -1,4 +1,8 @@
-﻿import { Component } from '@angular/core';
+﻿//Nenechat se zmást je důležité
+//Stránka se sice jmenuje about, ale vůbec to tak není
+//Tato stránka zobrazuje vlastně vytvořené menu
+
+import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, AlertController, Events } from 'ionic-angular';
 import { CustomMenuPage } from '../customMenu/CustomMenu';
@@ -22,7 +26,10 @@ export class AboutPage {
 
     }
 
-    //Found on stack overflow 6. 12. 2017 https://stackoverflow.com/questions/40127103/ionic-alert-wait-until-button-is-pressed
+    //Nalezeno na stack overflow 6. 12. 2017 https://stackoverflow.com/questions/40127103/ionic-alert-wait-until-button-is-pressed
+    //Ukáže uživateli alert, jestli chce smazat vlastní menu
+    //A podle volby vrátí boolean
+    //Vše je děláno tak, aby šlo použít callback
     presentAlert(message: string, title: string = 'Jste si jistý?'): Promise<boolean> {
 
         return new Promise((resolve, reject) => {
@@ -51,17 +58,19 @@ export class AboutPage {
             alert.present();
         });
     }
-
+    //jedná se o Ionic event, který se zavolá, těsně předtím, než bude stránka zobrazena
     ionViewWillEnter() {
         this.getLocalMenus();
     }
 
+    //Vezme z lokálního uložiště vlastní menu
     getLocalMenus(): any {
         this.storage.get("local_menus").then(save => {
             this.menus = save;
         });
     }
 
+    //Smaže menu
     deleteMenu(name: string) {
         this.presentAlert("Opravdu chcete smazat menu: " + name + "?").then((answer) => {
             if (answer) {
@@ -77,6 +86,7 @@ export class AboutPage {
         
     }
 
+    //Přidá vlastní menu do objednávky
     addToOrder(menu): void {
         this.globals.AddOrder(menu);
         this.events.publish("orderMenu", menu);

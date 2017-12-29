@@ -12,6 +12,9 @@ import { ModalPage } from './ModalPage';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
+//Celá stránka slouží jako formulář pro vlastní menu
+
 @Component({
     selector: 'page-CustomMenu',
     templateUrl: 'customMenu.html'
@@ -42,7 +45,8 @@ export class CustomMenuPage {
 
      
     }
-    //Use a modal
+
+    //Vytvoří modální okno, kde si uživatel vybere z nabídky jídel, které chce přidat do vlastního menu
     addFood() {
         let modal = this.modalCtrl.create(ModalPage);
         modal.present();
@@ -63,6 +67,7 @@ export class CustomMenuPage {
         console.log(this.storedMenus);
     }
 
+    //Uloží menu a odstraní stránku
     saveCustomMenu() {
         if (this.customMenuForm.valid && this.price != 0 ) {
             let menu = {

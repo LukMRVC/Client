@@ -1,4 +1,7 @@
-﻿import { Injectable } from '@angular/core';
+﻿
+//Globální Singleton třída, pro sdílení dat mezi stránkami
+
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Globals {

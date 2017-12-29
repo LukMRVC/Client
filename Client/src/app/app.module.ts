@@ -1,4 +1,6 @@
-﻿import { NgModule, ErrorHandler } from '@angular/core';
+﻿//Import a deklarování stránek a modulů, tak jak to Ionic vyžaduje
+
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, Badge } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';

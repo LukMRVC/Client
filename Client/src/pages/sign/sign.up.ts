@@ -7,6 +7,7 @@ import { TabsPage } from "../tabs/tabs";
 import 'rxjs/add/operator/map';
 import { SignIn } from './sign.in';
 
+//Importuje knihovnu třetí strany
 import * as nodeRsa from 'node-rsa';
 
 /*
@@ -39,21 +40,6 @@ export class SignUp {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad signupPage');
-       /* let body = {
-            password: 'encpass',
-            email: 'encemail'
-        };
-        
-        let stringified = CircularJSON.stringify(CryptJS.AES.encrypt(JSON.stringify(body), key,{
-            keySize: 256 / 8,
-            iv: iv,
-            mode: CryptJS.mode.CBC,
-            padding: CryptJS.pad.Pkcs7
-        }));
-        let bytes = CryptJS.AES.decrypt(CircularJSON.parse(stringified.toString()), 'Dbj3l0hL4S/YWDDlNKd2t/rL3t1hrf5Ie3+YyRttyM8=');
-        console.log(CircularJSON.parse(stringified.toString()));
-        let decrypted = JSON.parse(bytes.toString(CryptJS.enc.Utf8));
-        console.log("Decrypted: ", decrypted);*/
     }
 
     presentToast(msg: string): void {
@@ -82,7 +68,6 @@ export class SignUp {
             email: key.encrypt(this.signUpForm.value.email, 'hex')
         };
 
-        //let encrypt = CryptJS.AES.encrypt, 'Dbj3l0hL4S/YWDDlNKd2t/rL3t1hrf5Ie3+YyRttyM8=');
         this.http.post(this.globals.url + "/signup/", body, { headers: headers }).map(response => response.text()).subscribe(
             data => {
                 this.navCtrl.push(SignIn);

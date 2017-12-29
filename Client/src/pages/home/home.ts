@@ -30,12 +30,11 @@ export class HomePage {
         this.populateMenuData();
     }
 
-    //Run  ionic server after each change
-
     ionViewDidLoad() {
 
     }
 
+    //Získá momentální nabídku ze serveru
     populateMenuData() {
         if (this.called === true)
             return;
@@ -50,6 +49,7 @@ export class HomePage {
             }
             this.food.splice(0, 1);
             this.globals.setFood(this.food);
+            //Vybere kategorie a roztřídí vše
             this.selectCategories();
 
         }, error => {
@@ -58,6 +58,7 @@ export class HomePage {
         this.called = true;
     }
 
+    //Pokud uživatel podrží stisknuté tlačítko, zobrazí se mu dialogové okno s informaceni a konkrétní potravině
     showNutrition(EKj, EKcal, Protein, Carbs, Sugar, TotalFat, SaturatedFat, Fiber, Salt, allergenes) {
         let alert = this.alertCtrl.create({
             title: "Nutriční hodnoty",
@@ -69,14 +70,17 @@ export class HomePage {
         alert.present();
     }
 
+    
     selectCategories() {
         for (let i = 0; i < this.food.length; ++i) {
             if (this.food[i][2] == 1) {
+                //Roztřídí mezi hlavními kategoriemi a podkategoriemi
                 if (this.food[i][14].length == 1) {
                     this.mainCategories.push(this.food[i]);
                 } else {
                     this.subs.push(this.food[i]);
                 }
+                //A nebo opravdovým jídlem
             } else {
                 this.actualFood.push(this.food[i]);
             }
@@ -84,6 +88,7 @@ export class HomePage {
 
     }
 
+    //Přidá název, cenu a id jídla do objednávky, posíláno však je pouze id
     addToOrder(name, price, id) {
         let food = {
             name: name,

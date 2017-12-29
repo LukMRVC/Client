@@ -18,7 +18,7 @@ import { OrderHistoryPage } from '../orderhistory/orderhistory';
     templateUrl: 'order.html'
 })
 export class OrderPage {
-
+    //Proměnná html je pole pro zobrazení dat v šabloně
     html = [];
 
     foodIndices = [];
@@ -37,9 +37,11 @@ export class OrderPage {
         private alertCtrl: AlertController,
         private popoverCtrl: PopoverController
     ) {
+        //naslouchání na event
         this.event.subscribe('order', (body) => {
             this.AddItem(body);
         });
+        
         this.event.subscribe('orderMenu', (menu) => {
             this.AddMenu(menu);
         })
@@ -79,7 +81,9 @@ export class OrderPage {
 
     CleanFoodIndices(): void {
         for (let i = 0; i < this.html.length; ++i) {
+            //Zjistí vlastní menu
             if (this.html[i].hasOwnProperty('menu')) {
+                //Projde všechny checkboxy, najde vyškrtnuté a potom id toho jídla ostraní z objednávky
                 for (let j = 0; j < this.html[i].menu.length; ++j) {
                     if (this.html[i].menu[j].checked == false) {
                         this.foodIndices.splice(this.foodIndices.indexOf(this.html[i].menu[j].id), 1);
@@ -94,10 +98,11 @@ export class OrderPage {
             this.presentToast("Nemůžete odeslat prázdnou objednávku.");
             return;
         }
-        //Some food may have been removed from custom menu, this method will take care of it
+        //Když uživatel si nevybere některé jídlo ze svého vlastního menu, tahle metoda se o to postará
         this.CleanFoodIndices();
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
+        //objekt objednávky obsahuje uživatelský token, pole id jídel a celkovou cenu
         let order = {
             food: this.foodIndices,
             token: [this.globals.getToken()],
@@ -107,25 +112,18 @@ export class OrderPage {
         let getReq = new Headers;
         getReq.append("Authorization", "Basic " + this.globals.getToken());
 
+        
         this.presentLoading();
+        //Zažádá o braintree token, který je potom předán další stránce společně s celkovou cenou objednávky a objektem objednávky
         this.http.get(this.globals.url + "/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
-            
             this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice, order: order });
         })
-
-        
-
-      /*  this.http.post(this.globals.url + "/order/", JSON.stringify(order), { headers: headers }).map(res => res.text()).subscribe(
-            res => {
-                this.presentToast("Úspěšná objednávka");
-                this.RemoveItems();
-                this.tabs.select(0);
-            }, error => { console.log(error) });*/
        
     }
 
-    //User shared service from internet tutorial
+    
 
+    //Smaže celou objednávku
     private RemoveItems() {
         this.html = [];
         this.totalPrice = 0;
@@ -133,21 +131,25 @@ export class OrderPage {
         this.globals.RemoveOrders();
     }
 
+    //Přidá do objednávky jídlo
     private AddItem(body) {
         this.html.push(body);
         this.totalPrice += body.price;
         this.foodIndices.push(body.id);
     }
 
+    //Přidá do objednávky vlastní menu
     private AddMenu(menu) {
         this.totalPrice += menu.price;
         for (let i = 0; i < menu.menu.length; ++i) {
+            //A to id jídel se přidají id jídel z vlastního menu
             this.foodIndices.push(menu.menu[i].id);
             menu.menu[i]["checked"] = true;     
         }
         this.html.push(menu);
     }
 
+    //Přepočítá cenu
     private recalcPrice() {
         this.totalPrice = 0;
         for (let i = 0; i < this.html.length; ++i) {
@@ -216,10 +218,13 @@ export class OrderPage {
 
     }
 
-    //object can be food or menu
+    
     public removeItem(object) {
+        //Tohle rozhodne, jestli objekt je vlastní menu nebo normální jídlo
         if (object.hasOwnProperty('menu')) {
+        
             this.globals.RemoveMenuFromOrder(object);
+            //Odstraní menu z objednávky
             this.html.splice(this.html.indexOf(object), 1);
             for (let i = 0; i < object.menu.length; ++i) {
                 this.foodIndices.splice(this.foodIndices.indexOf(object.menu[i].id), 1);
@@ -227,6 +232,7 @@ export class OrderPage {
             this.totalPrice -= object.price;
         }
         else {
+            //Odstraní položku z objednávky
             this.globals.RemoveFromOrder(object.id);
             for (let i = 0; i < this.html.length; ++i) {
                 if (this.html[i].id == object.id) {
@@ -244,6 +250,7 @@ export class OrderPage {
         }
     }
 
+    //Historie objednávek
     private presentPopover(event) {
         let popover = this.popoverCtrl.create(PopoverPage);
         popover.present({
@@ -254,6 +261,11 @@ export class OrderPage {
 
 }
 
+
+/**
+Popover pro zobrazení historie objednávek
+ * /
+ */
 
 @Component({
     template: ` 
