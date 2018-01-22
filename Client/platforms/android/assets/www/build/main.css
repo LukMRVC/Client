@@ -22337,7 +22337,10 @@ page-OrderHistory .order {
 }
 
 page-welcome #welcome {
-  background: #F7F0F0;
+  background: #DB3340;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 page-welcome #welcome h1 {
@@ -22347,4 +22350,14 @@ page-welcome #welcome h1 {
 
 page-welcome #welcome h3 {
   font-size: 15pt;
+}
+
+page-welcome #welcome .center-div {
+  text-align: center;
+  width: 100%;
+  height: 60%;
+}
+
+page-welcome #welcome ion-img {
+  background: none;
 }

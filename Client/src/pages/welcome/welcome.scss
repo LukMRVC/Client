@@ -1,6 +1,8 @@
 page-welcome {
     #welcome {
-        background: color($colors, light);
+        background: color($colors, danger);
+        align-items: center;
+
 
         h1 {
             font-size: 25pt;
@@ -9,6 +11,17 @@ page-welcome {
 
         h3 {
             font-size: 15pt;
+        }
+
+        .center-div{
+            text-align: center;
+            width: 100%;
+            height: 60%;
+            
+        }
+
+        ion-img {
+            background: none;
         }
     }
 }

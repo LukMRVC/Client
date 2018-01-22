@@ -6,18 +6,11 @@
 -->
 
 <ion-content padding id="welcome">
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <h1>Klient</h1>
-            </ion-col>
-        </ion-row>
       <!--  <ion-row>
             <ion-col>
                 <h3>Už nemusíte stát v řadách, objednejte si za pochodu...</h3>
             </ion-col>
         </ion-row> -->
-    </ion-grid>
     <ion-grid>
         <ion-row>
             <ion-col center text-center>
@@ -26,8 +19,11 @@
         </ion-row>
         <ion-row>
             <ion-col center text-center>
-                <button ion-button outline color="danger" (click)="signUp()">Registrovat</button>
+                <button ion-button outline color="dark" (click)="signUp()">Registrovat</button>
             </ion-col>
         </ion-row>
     </ion-grid>
+    <div class="center-div">
+        <ion-img src="assets/img/icon.png" width="40%" height="40%"></ion-img>
+    </div>
 </ion-content>
