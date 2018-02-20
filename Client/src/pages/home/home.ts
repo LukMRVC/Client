@@ -18,6 +18,7 @@ export class HomePage {
     subs = [];
     mainCategories = [];
     actualFood = [];
+    treeview = {};
 
     constructor(
         public navCtrl: NavController,
@@ -38,19 +39,21 @@ export class HomePage {
     populateMenuData() {
         if (this.called === true)
             return;
-        let link = this.globals.url + "/get_food/";
+        let link = this.globals.url + "/getMenuData";
         let headers = new Headers;
         headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'text/json');
+        headers.append('Accept', 'application/json');
         headers.append("Authorization", "Basic " + this.globals.getToken());
         this.http.get(link, { headers: headers }).map(response => response.json()).subscribe(data => {
-            for (var x in data) {
+            console.log(data);
+            this.treeview = data;
+            /*for (var x in data) {
                 this.food.push(data[x]);
             }
             this.food.splice(0, 1);
             this.globals.setFood(this.food);
             //Vybere kategorie a roztřídí vše
-            this.selectCategories();
+            this.selectCategories();*/
 
         }, error => {
             console.log("Error: " + error);

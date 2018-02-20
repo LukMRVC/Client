@@ -57,13 +57,13 @@ export class SignIn {
         let key = new nodeRsa(this.globals.RSAKeyString, 'pkcs8-public-pem', 'pkcs1_oaep');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'text/plain');
+        headers.append('Accept', 'application/json');
         //Tělo obsahuje zašifrovaná data
         let body = {
             email: key.encrypt(this.signInForm.value.email, 'hex'),
             password: key.encrypt(this.signInForm.value.password, 'hex')
         };
-        this.http.post(this.globals.url + "/login/", JSON.stringify(body), { headers: headers }).map(Response => Response.text()).subscribe(
+        this.http.post(this.globals.url + "/login", JSON.stringify(body), { headers: headers }).map(Response => Response.text()).subscribe(
             data => {
                 this.storage.set('saved_token', data);
                 this.globals.setToken(data);

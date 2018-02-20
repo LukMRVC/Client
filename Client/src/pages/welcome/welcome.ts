@@ -4,7 +4,7 @@ import { SignIn } from '../sign/sign.in';
 import { SignUp } from '../sign/sign.up';
 import { TabsPage } from '../tabs/tabs';
 import { Globals } from "../../app/Globals";
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
@@ -41,23 +41,28 @@ export class WelcomePage {
     }
 
     private getRsaKey(): void {
-        this.http.get(this.globals.url + "/get_key/", {}).map(res => res.text()).subscribe(key => {
+        this.http.get(this.globals.url + "/get_key", {}).map(res => res.text()).subscribe(key => {
             console.log(key);
             this.globals.RSAKeyString = key;
         }, error => {
             //Pokud se klíč nepodaří získat, bude se zkoušet dokola každé 4 sekundy
             console.log("Error: ", error);
             setTimeout(this.getRsaKey(), 4000);
-            })
+        });
     }
 
     //Zkusí se přihlásit pomocí uloženého tokenu, pokud ještě nevypršela jeho platnost
     public tryLogin() {
         this.storage.get('saved_token').then((token) => {
-            let body = {
-                token: token
+            if (token == null) {
+                return;
             }
-            this.http.post(this.globals.url + "/login/", JSON.stringify(body), {}).map(res => res.text()).subscribe(success => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('Accept', 'application/json');
+            headers.append('Authorization', "Basic " + token);
+        
+            this.http.get(this.globals.url + "/login", { headers : headers }).map(res => res.text()).subscribe(success => {
                 this.storage.set('saved_token', success);
                 this.globals.setToken(success);
                 this.navCtrl.push(TabsPage);

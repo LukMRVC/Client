@@ -62,13 +62,13 @@ export class SignUp {
         let key = new nodeRsa(this.globals.RSAKeyString, 'pkcs8-public-pem', 'pkcs1_oaep');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'text/plain');
+        headers.append('Accept', 'application/json');
         let body = {
             password: key.encrypt(this.signUpForm.value.password, 'hex'),
             email: key.encrypt(this.signUpForm.value.email, 'hex')
         };
 
-        this.http.post(this.globals.url + "/signup/", body, { headers: headers }).map(response => response.text()).subscribe(
+        this.http.post(this.globals.url + "/signup", body, { headers: headers }).map(response => response.text()).subscribe(
             data => {
                 this.navCtrl.push(SignIn);
                 this.navCtrl.remove(1, 1);
