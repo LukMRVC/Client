@@ -19,21 +19,18 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list *ngFor="let cat of main" color="light">
-        <ion-list-header>
-            {{cat[0]}}
-        </ion-list-header>
+    <ion-list color="light">
         <div *ngFor="let f of food">
-            <ion-item *ngIf="cat[14] == f[14].charAt(0)" (click)="addToMenu(f[0], f[3], f[1])">
+            <ion-item (click)="addToMenu(f.Name, f.Price, f.Id)">
                 <ion-icon name='add' item-start></ion-icon>
-                {{f[0]}}
-                <span *ngFor="let subcat of sub">
-                    <ion-note class="subcategory" *ngIf="f[14].substring(0, subcat[14].length) == subcat[14]">
-                        {{subcat[0]}}
+                {{ f.Name }}
+                
+                    <ion-note class="subcategory">
+                        {{ f.Text }}
                     </ion-note>
-                </span>
+                
                 <ion-note item-end>
-                    {{f[3]}} Kč
+                    {{ f.Price }} Kč
                 </ion-note>
             </ion-item>
         </div>

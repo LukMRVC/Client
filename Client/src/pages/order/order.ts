@@ -115,7 +115,7 @@ export class OrderPage {
         
         this.presentLoading();
         //Zažádá o braintree token, který je potom předán další stránce společně s celkovou cenou objednávky a objektem objednávky
-        this.http.get(this.globals.url + "/braintree_token/", { headers: getReq }).map(res => res.text()).subscribe(success => {
+        this.http.get(this.globals.url + "/braintree_token", { headers: getReq }).map(res => res.text()).subscribe(success => {
             this.navCtrl.push(CheckoutPage, { token: success, amount: this.totalPrice, order: order });
         })
        

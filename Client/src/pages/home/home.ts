@@ -46,15 +46,16 @@ export class HomePage {
         headers.append("Authorization", "Basic " + this.globals.getToken());
         this.http.get(link, { headers: headers }).map(response => response.json()).subscribe(data => {
             console.log(data);
+            //I should maybe parse these data, and order them somehow... Categories to be exact
             this.treeview = data;
             /*for (var x in data) {
                 this.food.push(data[x]);
             }
             this.food.splice(0, 1);
-            this.globals.setFood(this.food);
-            //Vybere kategorie a roztřídí vše
-            this.selectCategories();*/
-
+            
+            //Vybere kategorie a roztřídí vše*/
+            this.AssociateFoodWithCategories();
+            this.globals.setFood(this.treeview['Food']);
         }, error => {
             console.log("Error: " + error);
         });
@@ -73,23 +74,28 @@ export class HomePage {
         alert.present();
     }
 
-    
-    selectCategories() {
-        for (let i = 0; i < this.food.length; ++i) {
-            if (this.food[i][2] == 1) {
-                //Roztřídí mezi hlavními kategoriemi a podkategoriemi
-                if (this.food[i][14].length == 1) {
-                    this.mainCategories.push(this.food[i]);
-                } else {
-                    this.subs.push(this.food[i]);
-                }
-                //A nebo opravdovým jídlem
-            } else {
-                this.actualFood.push(this.food[i]);
+
+
+    AssociateFoodWithCategories() {
+        let parent;
+        for (let i = 0; i < this.treeview['Food'].length; ++i) {
+            parent = this.FindParent(this.treeview['Categories'], this.treeview['Food'][i].CategoryId);
+            while (parent.ParentId != null) {
+                this.treeview['Food'][i]['Text'] = parent.Name + " ";
+                parent = this.FindParent(this.treeview['Categories'], parent.ParentId);
+            }
+            this.treeview['Food'][i].CategoryId = parent.Id;
+        }
+    }
+
+    FindParent(categories, parentId) : any {
+        for (let i = 0; i < categories.length; ++i) {
+            if (categories[i].Id == parentId) {
+                return categories[i];
             }
         }
-
     }
+
 
     //Přidá název, cenu a id jídla do objednávky, posíláno však je pouze id
     addToOrder(name, price, id) {

@@ -6,22 +6,25 @@
 </ion-header>
 <ion-content padding>
     
-    <ion-list *ngFor="let cat of treeview.Categories" color="light">
-        <ion-list-header>
-            {{ cat.Name }}
-        </ion-list-header>
-        <div *ngFor="let f of treeview.Food">
-            <ion-item *ngIf="f.CategoryId == cat.Id" (click)="addToOrder(f.Name, f.Price, f.Id)" (press)="showNutrition(f.EnergyKj, f.EnergyKcal, f.Protein, f.Carbohydrates, f.Sugar, f.TotalFat, f.SaturatedFat, f.Fiber, f.Salt, f.Allergenes)">
-                <ion-icon name='add' item-start></ion-icon>
-                &nbsp;{{ f.Name }}
-
-                <ion-note item-end>
-                    {{ f.Price }} Kč
-                </ion-note>
-            </ion-item>
-        </div>
-    </ion-list>
-
+    <div *ngFor="let cat of treeview.Categories">
+        <ion-list *ngIf="cat.ParentId == null" color="light">
+            <ion-list-header>
+                {{ cat.Name }}
+            </ion-list-header>
+            <div *ngFor="let f of treeview.Food">
+                <ion-item *ngIf="f.CategoryId == cat.Id" (click)="addToOrder(f.Name, f.Price, f.Id)" (press)="showNutrition(f.EnergyKj, f.EnergyKcal, f.Protein, f.Carbohydrates, f.Sugar, f.TotalFat, f.SaturatedFat, f.Fiber, f.Salt, f.Allergenes)">
+                    <ion-icon name='add' item-start></ion-icon>
+                    &nbsp;{{ f.Name }}
+                    <ion-note class="subcategory">
+                        {{ f.Text }}
+                    </ion-note>
+                    <ion-note item-end>
+                        {{ f.Price }} Kč
+                    </ion-note>
+                </ion-item>
+            </div>
+        </ion-list>
+    </div>
 
     <!--<ion-list *ngFor="let cat of mainCategories" color="light">
         <ion-list-header>

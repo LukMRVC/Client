@@ -26,7 +26,7 @@ export class OrderHistoryPage {
         let headers = new Headers;
         headers.append("Authorization", "Basic " + this.globals.getToken());
         //získá historii uživatele
-        this.http.get(this.globals.url + "/get_user_history/", { headers: headers }).map(res => res.json()).subscribe(success => {
+        this.http.get(this.globals.url + "/get_user_history", { headers: headers }).map(res => res.json()).subscribe(success => {
             for (let property in success) {
                 if (success.hasOwnProperty(property)) {
                     this.orders.push(success[property]);

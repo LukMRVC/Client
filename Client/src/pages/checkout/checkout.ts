@@ -108,10 +108,10 @@ export class CheckoutPage {
                     console.log(payload.amount);
                     let headers = new Headers;
                     headers.append('Content-Type', 'application/json');
-                    headers.append('Accept', 'text/plain');
+                    headers.append('Accept', 'application/json');
                     headers.append('Authorization', 'Basic ' + authToken);
                     // Odešle nonce serveru a nějaké další informace
-                    CheckoutPage.sHttp.post(this.globals.url + "/pay/", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
+                    CheckoutPage.sHttp.post(this.globals.url + "/pay", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
                         CheckoutPage.sHttp.post("http://localhost:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
                             instance.teardown();
                             CheckoutPage.events.publish("checkout", true);

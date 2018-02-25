@@ -20,18 +20,7 @@ export class ModalPage {
     }
 
     ionViewDidLoad() {
-        let food = this.globals.getFood();
-        for (let i = 0; i < food.length; ++i) {
-            if (food[i][2] == 1) {
-                if (food[i][14].length == 1) {
-                    this.main.push(food[i]);
-                } else {
-                    this.sub.push(food[i]);
-                }
-            } else {
-                this.food.push(food[i]);
-            }
-        }
+        this.food = this.globals.getFood();
     }
 
     addToMenu(name, price, id): void {
