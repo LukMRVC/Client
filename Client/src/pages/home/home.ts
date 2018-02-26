@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { NavController, App, AlertController, Events } from 'ionic-angular';
+import { NavController, App, AlertController, LoadingController, Events } from 'ionic-angular';
 import { Globals } from "../../app/Globals";
 import 'rxjs/add/operator/map';
 import { WelcomePage } from "../welcome/welcome";
@@ -14,10 +14,6 @@ export class HomePage {
 
     called = false;
 
-    food = [[]];
-    subs = [];
-    mainCategories = [];
-    actualFood = [];
     treeview = {};
 
     constructor(
@@ -26,13 +22,17 @@ export class HomePage {
         public app: App,
         public globals: Globals,
         public alertCtrl: AlertController,
+        public loadingCtrl: LoadingController,
         public events: Events
     ) {
         this.populateMenuData();
     }
 
     ionViewDidLoad() {
-
+        this.loadingCtrl.create({
+            content: "Počkejte prosím...",
+            duration: 1000,
+        }).present();
     }
 
     //Získá momentální nabídku ze serveru

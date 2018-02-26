@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Historie Objednávek</ion-title>
+    <ion-title>Historie objednávek</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,20 +16,22 @@
 <ion-content padding>
     <ion-list *ngFor="let order of this.orders">
         <ion-list-header class="date" color="secondary">
-            {{ order[0] }}
+            {{ order.Date }}
         </ion-list-header>
         <ion-item>
-            Cena: {{order[2]}}&nbsp;Kč
+            Cena: {{ order.TotalPrice }}&nbsp;Kč
         </ion-item>
         <ion-item>
-            <ion-list>
-                <ion-list-header class="order" color="primary">
-                    Objednávka: 
-                </ion-list-header>
-                <ion-item *ngFor="let food of order[1].split(',')">
-                    {{food}}
-                </ion-item>
-            </ion-list>
+            <div style="margin-top: 1em;">
+                <ion-list>
+                    <ion-list-header class="order" color="primary">
+                        Objednávka:
+                    </ion-list-header>
+                    <ion-item *ngFor="let orderfood of order.OrderFood">
+                        {{ orderfood.FoodCount }}x&nbsp;{{ orderfood.Food.Name }}
+                    </ion-item>
+                </ion-list>
+            </div>
         </ion-item>
     </ion-list>
 </ion-content>

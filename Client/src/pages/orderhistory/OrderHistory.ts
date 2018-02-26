@@ -34,7 +34,6 @@ export class OrderHistoryPage {
             }
             this.orders = this.orders.reverse();
             console.log(this.orders);
-            console.log("Success: ", success);
         }, error => {
             console.log("Error: ", error);
         })

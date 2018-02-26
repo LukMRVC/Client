@@ -77,7 +77,7 @@ export class CheckoutPage {
         }).present();
     }
 
-    //Vytvoří UI integorované braintree platební brány
+    //Vytvoří UI integrované braintree platební brány
     createDropin() {
         //User auth token
         var authToken = this.globals.getToken();
@@ -95,7 +95,7 @@ export class CheckoutPage {
             }
             let submitBtn = document.getElementById('submit-button');
             submitBtn.addEventListener('click', (event) => {
-                instance.requestPaymentMethod( (err, payload) => {
+                instance.requestPaymentMethod((err, payload) => {
                     if (err) {
                         // Kdyby někdo chtěl zaplatit, než vyplní formulář
                         CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Platit můžete až po správném vyplnění vaší platební karty.");
@@ -112,25 +112,21 @@ export class CheckoutPage {
                     headers.append('Authorization', 'Basic ' + authToken);
                     // Odešle nonce serveru a nějaké další informace
                     CheckoutPage.sHttp.post(this.globals.url + "/pay", JSON.stringify(payload), { headers: headers }).map(res => res.text()).subscribe(success => {
-                        CheckoutPage.sHttp.post("http://localhost:8088/order/", JSON.stringify(CheckoutPage.food)).map(response => response.text()).subscribe(good => {
+                        CheckoutPage.sHttp.post("http://localhost:1234/api/order", JSON.stringify(CheckoutPage.food), { headers: headers }).map(response => response.text()).subscribe(good => {
                             instance.teardown();
                             CheckoutPage.events.publish("checkout", true);
                             CheckoutPage.nav.pop();
                         }, bad => {
                             console.log(bad);
-                            })
+                        });
                     }, error => {
                         //instance.teardown() smaže braintree formulář
                         instance.teardown();
                         CheckoutPage.nav.pop();
                         CheckoutPage.presentToast(CheckoutPage.toastCtrl, "Chyba při provádění platby. Zkuste znovu");
-                    })
+                    });
                 });
             });
-
-            })
+        });
     }
-
-    
-
 }
