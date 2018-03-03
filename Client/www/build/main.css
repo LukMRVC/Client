@@ -22336,6 +22336,20 @@ page-OrderHistory .order {
   color: #000;
 }
 
+page-signin #signin {
+  background: #DB3340;
+  height: 100%;
+  display: block;
+  vertical-align: middle;
+}
+
+page-signup #signup {
+  background: #DB3340;
+  height: 100%;
+  display: block;
+  vertical-align: middle;
+}
+
 page-welcome #welcome {
   background: #DB3340;
   -webkit-align-items: center;

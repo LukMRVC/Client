@@ -10,14 +10,14 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding id="signin">
     <ion-list center>
-        <form  [formGroup]="signInForm">
-            <ion-item>
+        <form [formGroup]="signInForm">
+            <ion-item color="light">
                 <ion-label floating>Email</ion-label>
                 <ion-input type="text" formControlName="email"><!-- [(ngModel)]="email" --></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item color="light">
                 <ion-label floating>Heslo</ion-label>
                 <ion-input type="password" formControlName="password"><!--[(ngModel)]="password"--></ion-input>
             </ion-item>
